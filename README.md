@@ -57,7 +57,7 @@ public class Callback : MonoBehaviour
 
 ## 实战小游戏
 
-#### 1. 做一个迷宫小游戏
+### 1. 做一个迷宫小游戏
 
 1. 使用 Cube 拼地图，按住 v 鼠标拖动会自动对齐
 2. 下载资源 Mini first person controller ，并将 First person controller bare 拖进迷宫
@@ -72,14 +72,14 @@ public class Callback : MonoBehaviour
     }
 ```
 
-#### 2. 做一个打地鼠游戏
+### 2. 做一个打地鼠游戏
 
-##### 1. 导入资源
+#### 1. 导入资源
 
 1. 设置 Sort Layer ， 新增 Layer: Ground, Hole, Mole
 2. 将 Hole, Mole 存为 prefab
 
-##### 2. 生成洞口
+#### 2. 生成洞口
 
 `public GameObject holeObj;` 把脚本挂在 ground 上，holeObj 设为 hole 的 prefeb 。
 
@@ -139,12 +139,12 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
 ```
 
-##### 3. 随机生成地鼠
+#### 3. 随机生成地鼠
 
 使用 `InvokeRepeating` 定时调用 `MoleAppear` 函数。
 
@@ -191,12 +191,12 @@ public class Mole : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
 ```
 
-##### 4. 鼠标左键打击地鼠
+#### 4. 鼠标左键打击地鼠
 
 用到函数 `OnMouseDown()` 来检测鼠标点击事件。
 
@@ -213,7 +213,7 @@ public class Mole : MonoBehaviour
     }
 ```
 
-##### 5. 实现游戏计时
+#### 5. 实现游戏计时
 
 需用用到 `Time.deltaTime` 来倒计时。新建一个 `Timer.cs` 。
 
@@ -231,7 +231,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -252,4 +252,3 @@ public class Timer : MonoBehaviour
     }
 }
 ```
-
