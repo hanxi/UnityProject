@@ -74,10 +74,12 @@ public class Callback : MonoBehaviour
 
 #### 2. 做一个打地鼠游戏
 
-1. 导入资源
-   1. 设置 Sort Layer ， 新增 Layer: Ground, Hole, Mole
-   2. 将 Hole, Mole 存为 prefab
-2. 生成洞口
+##### 1. 导入资源
+
+1. 设置 Sort Layer ， 新增 Layer: Ground, Hole, Mole
+2. 将 Hole, Mole 存为 prefab
+
+##### 2. 生成洞口
 
 `public GameObject holeObj;` 把脚本挂在 ground 上，holeObj 设为 hole 的 prefeb 。
 
@@ -89,7 +91,7 @@ public class Callback : MonoBehaviour
 0(-2,-2)  1(0,-2)  2(2,-2)
 ```
 
-```
+```txt
 a[m][n] 映射到一维数组b[k]的公式：k=i*n+j，m,n 分别表示二维数组的行数和列数，i为元素所在行，j 为元素所在列。同时 0<=i<m, o<=j<n
 ```
 
@@ -141,3 +143,113 @@ public class GameController : MonoBehaviour
     }
 }
 ```
+
+##### 3. 随机生成地鼠
+
+使用 `InvokeRepeating` 定时调用 `MoleAppear` 函数。
+
+```c#
+    void Start()
+    {
+        InitMap();
+        InvokeRepeating("MoleAppear", 2f, 1f);
+    }
+    private void MoleAppear() {
+        int id = UnityEngine.Random.Range(0, 9);
+        while (holes[id].isAppear == true) {
+            id = UnityEngine.Random.Range(0, 9);
+        }
+        Debug.Log("MoleAppear, id:"+id);
+        holes[id].mole = Instantiate(moleObj, new Vector3(holes[id].holeX, holes[id].holeY, 0), Quaternion.identity);
+        holes[id].isAppear = true;
+    }
+
+    private void CleanHoleState() {
+        for (int i=0; i<9; i++) {
+            if (holes[i].mole == null) {
+                holes[i].isAppear = false;
+            }
+        }
+    }
+```
+
+地鼠调用 `Destroy` 延迟删除自己。
+
+```c#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Mole : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        Destroy(gameObject, 2f);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+```
+
+##### 4. 鼠标左键打击地鼠
+
+用到函数 `OnMouseDown()` 来检测鼠标点击事件。
+
+流程就是点击后，把打中状态的地鼠放到地鼠孔那里，然后删除普通地鼠。
+
+打中状态的地鼠设为 1 秒后消失。把 `gameController.holes[id].mole` 赋值为打中状态的地鼠，当打中状态的地鼠删除时，它就会变成 null , 然后在 `CleanHoleState` 里面就会更新 isAppear 的状态。
+
+```c#
+    private void OnMouseDown() {
+        Debug.Log("OnMouseDown");
+        // beatenMole 销毁时 mole 会为 null
+        gameController.holes[id].mole = Instantiate(beatenMole, gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+```
+
+##### 5. 实现游戏计时
+
+需用用到 `Time.deltaTime` 来倒计时。新建一个 `Timer.cs` 。
+
+```c#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Timer : MonoBehaviour
+{
+    public Text timerText; // UI 控件用来显示倒计时
+    public float time = 30.0f; // 初始化倒计时
+    private bool canCountDown = false; // 标记是否开始倒计时
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (canCountDown == true) {
+            // 扣倒计时
+            time = time - Time.deltaTime;
+            Debug.Log("Update time:"+time);
+            // 修改倒计时显示
+            timerText.text = "Time: " + time.ToString("f1");
+        }
+    }
+
+    // 设置是否开始倒计时
+    public void CountDown(bool countDown) {
+        this.canCountDown = countDown;
+    }
+}
+```
+

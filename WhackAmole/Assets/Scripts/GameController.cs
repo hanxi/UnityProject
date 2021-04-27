@@ -16,11 +16,13 @@ public class GameController : MonoBehaviour
     public float intervalPosX = 2, intervalPosY = 1;
     public GameObject holeObj;
     public GameObject moleObj;
+    public Timer timer;
     // Start is called before the first frame update
     void Start()
     {
         InitMap();
-        InvokeRepeating("MoleAppear", 3f, 1f);
+        InvokeRepeating("MoleAppear", 0f, 0.5f);
+        timer.CountDown(true);
     }
 
     private void InitMap()
@@ -54,6 +56,7 @@ public class GameController : MonoBehaviour
         }
         Debug.Log("MoleAppear, id:"+id);
         holes[id].mole = Instantiate(moleObj, new Vector3(holes[id].holeX, holes[id].holeY, 0), Quaternion.identity);
+        holes[id].mole.GetComponent<Mole>().id = id; // 给地鼠分配id
         holes[id].isAppear = true;
     }
 
