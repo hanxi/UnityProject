@@ -20,7 +20,7 @@ public class Timer : MonoBehaviour
         if (canCountDown == true) {
             // 扣倒计时
             time = time - Time.deltaTime;
-            Debug.Log("Update time:"+time);
+            //Debug.Log("Update time:"+time);
             // 修改倒计时显示
             timerText.text = "Time: " + time.ToString("f1");
         }
@@ -28,6 +28,10 @@ public class Timer : MonoBehaviour
 
     // 设置是否开始倒计时
     public void CountDown(bool countDown) {
-        this.canCountDown = countDown;
+        canCountDown = countDown;
+        if (canCountDown == false) {
+            time = 0;
+            timerText.text = "Game Over!!!";
+        }
     }
 }

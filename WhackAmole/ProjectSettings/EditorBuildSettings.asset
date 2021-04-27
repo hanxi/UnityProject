@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/WhackAmole.unity
+    guid: 645112b3b1bf0b847980d2c702fda566
   m_configObjects: {}

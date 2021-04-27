@@ -27,5 +27,7 @@ public class Mole : MonoBehaviour
         // beatenMole 销毁时 mole 会为 null
         gameController.holes[id].mole = Instantiate(beatenMole, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);
+        gameController.score++; // 分数加 1
+        gameController.scoreText.text = "Score: " + gameController.score; // 显示分数
     }
 }

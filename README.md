@@ -257,3 +257,206 @@ public class Timer : MonoBehaviour
     }
 }
 ```
+
+#### 6. 实现计分功能
+
+我实现和老师实现的不太一样，我是把 `score` 和 `scoreText` 放到 `GameController` 里的。
+
+```c#
+public class GameController : MonoBehaviour
+{
+    public Text scoreText; // 显示分数的 UI
+    public int score = 0; // 分数
+    // ...
+}
+```
+
+然后 Mole.cs 里点击事件改为
+
+```c#
+    private void OnMouseDown() {
+        Debug.Log("OnMouseDown");
+        // beatenMole 销毁时 mole 会为 null
+        gameController.holes[id].mole = Instantiate(beatenMole, gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
+        gameController.score++; // 分数加 1
+        gameController.scoreText.text = "Score: " + gameController.score; // 显示分数
+    }
+```
+
+#### 7. 游戏结束的功能
+
+在 `GameController` 里的 `Update` 加入游戏结束的判断，如果时间没了就调用 `GameOver` 函数。
+
+```c#
+    void Update()
+    {
+        CleanHoleState();
+        if (timer.time < 0) {
+            GameOver();
+        }
+    }
+
+    private void GameOver()
+    {
+        timer.CountDown(false); // 设置时间停止
+        CancelInvoke(); // 把所有 InvokeRepeating 取消
+    }
+```
+
+`Timer` 的 `CountDown` 修改如下，当时间停止时，修改时间和显示：
+
+```c#
+    // 设置是否开始倒计时
+    public void CountDown(bool countDown) {
+        canCountDown = countDown;
+        if (canCountDown == false) {
+            time = 0;
+            timerText.text = "Game Over!!!";
+        }
+    }
+```
+
+#### 8. 修改地鼠出现频率
+
+在 `GameController` 里新增两个变量，控制在 15s 改表地鼠出现频率。
+
+```c#
+    public float appearFrequency = 0.5f; // 地鼠出现频率
+    public bool canIncreaseMole = true; // 控制时间小于 15 秒时，只修改一次频率
+
+    // 清空循环定时器，并开启一个循环定时器
+    private void MoleAppearFrequency() {
+        CancelInvoke();
+        InvokeRepeating("MoleAppear", 0f, appearFrequency);
+    }
+    void Start()
+    {
+        InitMap();
+        MoleAppearFrequency();
+        //InvokeRepeating("MoleAppear", 0f, 0.5f);
+        timer.CountDown(true);
+    }
+```
+
+新增函数 `MoleAppearFrequency` 并且在 `Start` 里面调用它。然后在 `Update` 里面也调用它。
+
+```c#
+    void Update()
+    {
+        CleanHoleState();
+        if (timer.time < 0) {
+            GameOver();
+        }
+        if (timer.time < 15 && canIncreaseMole == true) {
+            appearFrequency -= 0.3f;
+            canIncreaseMole = false; // 只能调用一次，所以需要这个标记
+            MoleAppearFrequency();
+        }
+    }
+```
+
+同时优化下 `MoleAppear` ，不使用之前的死循环，只要判断 9 个位置都没空位了就提前退出。
+
+```C#
+    private void MoleAppear() {
+        int id = UnityEngine.Random.Range(0, 9);
+        for (int i=0; i<9; i++) {
+            if (holes[id].isAppear == true) {
+                id = UnityEngine.Random.Range(0, 9);
+            }
+        }
+        if (holes[id].isAppear == true) {
+            // 没随机到位置就退出
+            return;
+        }
+        //Debug.Log("MoleAppear, id:"+id);
+        holes[id].mole = Instantiate(moleObj, new Vector3(holes[id].holeX, holes[id].holeY, 0), Quaternion.identity);
+        holes[id].mole.GetComponent<Mole>().id = id; // 给地鼠分配id
+        holes[id].isAppear = true;
+    }
+```
+
+#### 9. 实现锤子击打效果
+
+隐藏鼠标，新建 `ChangeCursor.cs` 脚本
+
+```c#
+    public Sprite normalCursor; // 鼠标普通状态
+    public Sprite hitCursor; // 鼠标点中状态
+    public Image hamerImage; // 鼠标图片
+    void Start()
+    {
+        Cursor.visible = false;
+    }
+```
+
+添加锤子，新建 Image UI，命名为 `HammerImage` ，修改 Source Image 为 Hammer Sprite，并绑定 `ChangeCursor.cs` 脚本。绑定 Normal Cursor 为 Hammer Sprite，绑定 Hit Cursor 为 Hammer_Hit，绑定 Hammer Image 为 `HammerImage` 。
+
+```c#
+    void Update()
+    {
+        hamerImage.rectTransform.position = Input.mousePosition; // 设置图片的位置为鼠标位置
+        if (Input.GetMouseButton(0)) {
+            // 按下按钮则改图片为 hitCursor
+            hamerImage.sprite  = hitCursor;
+        } {
+            hamerImage.sprite  = normalCursor;
+        }
+    }
+```
+
+这里应该是有 BUG， 在 2019.4 版本的 Unity 里点击鼠标没有替换图片。
+
+#### 10. 实现音效
+
+新增目录 `Audios` ，把两个音频文件拖进去。
+
+然后给 Mole prefab 添加 Audio Source 组件，设置音频组件的 AudioClip 为 appear 音效。
+
+再同样给 Mole_Beaten prefab 添加 Audio Source 组件，设置音频组件的 AudioClip 为 beaten 音效。
+
+注意 Play On Awake 勾选。
+
+#### 11. 重新开始游戏
+
+实现一个按钮，按下 Restart 按钮重新开始游戏。使用老师提供的方法在 2019.4 版本的 Unity 里实现不了，点击按钮没反应。
+
+使用这里的的第二种方法可以实现： <https://www.cnblogs.com/isayes/p/6370168.html>
+
+```c#
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class Restart : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        Button btn = this.GetComponent<Button> ();
+        btn.onClick.AddListener (OnClick);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    private void OnClick()
+    {
+        SceneManager.LoadScene("WhackAmole");
+    }
+}
+```
+
+#### 12. 总结
+
+安装课程一步一步跟着实战学习，熟悉了 Unity 编辑器的使用，熟悉了几个基础的 UI 控件。接下来不继续学张帆老师的课了，我看后面的游戏都是 2D 的小游戏，我想玩玩 3D 的游戏。所以挑选了另外一门课程，复旦大学姜忠鼎老师的课程《基于Unity引擎的游戏开发基础》
+
+<https://www.coursera.org/learn/unity-yinqing-youxi-kaifa>
+
+这门课程可以参加旁听的，是一个系列的课程，先学基础试试看，之后如果有兴趣的话再学习后面的课程。

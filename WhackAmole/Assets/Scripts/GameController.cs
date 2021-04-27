@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -17,11 +18,22 @@ public class GameController : MonoBehaviour
     public GameObject holeObj;
     public GameObject moleObj;
     public Timer timer;
+    public Text scoreText;
+    public int score = 0;
+    public float appearFrequency = 0.5f; // 地鼠出现频率
+    public bool canIncreaseMole = true; // 控制时间小于 15 秒时，只修改一次频率
+
+    // 清空循环定时器，并开启一个循环定时器
+    private void MoleAppearFrequency() {
+        CancelInvoke();
+        InvokeRepeating("MoleAppear", 0f, appearFrequency);
+    }
     // Start is called before the first frame update
     void Start()
     {
         InitMap();
-        InvokeRepeating("MoleAppear", 0f, 0.5f);
+        MoleAppearFrequency();
+        //InvokeRepeating("MoleAppear", 0f, 0.5f);
         timer.CountDown(true);
     }
 
@@ -47,14 +59,34 @@ public class GameController : MonoBehaviour
     void Update()
     {
         CleanHoleState();
+        if (timer.time < 0) {
+            GameOver();
+        }
+        if (timer.time < 15 && canIncreaseMole == true) {
+            appearFrequency -= 0.3f;
+            canIncreaseMole = false;
+            MoleAppearFrequency();
+        }
+    }
+
+    private void GameOver()
+    {
+        timer.CountDown(false);
+        CancelInvoke(); // 把所有 InvokeRepeating 取消
     }
 
     private void MoleAppear() {
         int id = UnityEngine.Random.Range(0, 9);
-        while (holes[id].isAppear == true) {
-            id = UnityEngine.Random.Range(0, 9);
+        for (int i=0; i<9; i++) {
+            if (holes[id].isAppear == true) {
+                id = UnityEngine.Random.Range(0, 9);
+            }
         }
-        Debug.Log("MoleAppear, id:"+id);
+        if (holes[id].isAppear == true) {
+            // 没随机到位置就退出
+            return;
+        }
+        //Debug.Log("MoleAppear, id:"+id);
         holes[id].mole = Instantiate(moleObj, new Vector3(holes[id].holeX, holes[id].holeY, 0), Quaternion.identity);
         holes[id].mole.GetComponent<Mole>().id = id; // 给地鼠分配id
         holes[id].isAppear = true;
