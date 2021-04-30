@@ -455,8 +455,183 @@ public class Restart : MonoBehaviour
 
 #### 12. 总结
 
-按照课程一步一步跟着实战学习，熟悉了 Unity 编辑器的使用，熟悉了几个基础的 UI 控件。接下来不继续学张帆老师的课了，我看后面的游戏都是 2D 的小游戏，我想玩玩 3D 的游戏。所以挑选了另外一门课程，复旦大学姜忠鼎老师的课程《基于Unity引擎的游戏开发基础》
+按照课程一步一步跟着实战学习，熟悉了 Unity 编辑器的使用，熟悉了几个基础的 UI 控件。接下来不继续学张帆老师的课了，我看后面的游戏都是 2D 的小游戏，我想玩玩 3D 的游戏。所以挑选了另外一门课程，复旦大学姜忠鼎老师的课程《基于 Unity 引擎的游戏开发基础》
 
 <https://www.coursera.org/learn/unity-yinqing-youxi-kaifa>
 
 这门课程可以参加旁听的，是一个系列的课程，先学基础试试看，之后如果有兴趣的话再学习后面的课程。
+
+## 基于 Unity 引擎的游戏开发基础
+
+### 图形资源介绍
+
+2D
+
+- 位图 bitmap
+  - 颜色深度，1bit 2 色，8bit 256 色，24 bit 16777216 色/65536 色+alpha 通道(16bit+8bit) ，32bit 16777216 色+alpha 通道
+  - 常见位图格式：PSD,BMP，JPEG，PNG,DXTn
+- 矢量图
+  - 面向对象
+  - 放大不会失真
+  - 常见矢量图格式：AI,CDR,COL,SVG
+
+3D
+
+- 由三维软件构造
+- 包括几何，材质，动画
+- 文件格式
+  - MB/MA(Autodesk Maya)
+  - MAX(Autodesk 3DS Max)
+  - BLENDER(Blender 免费)
+  - FBX(Unity 默认)
+  - OBJ
+
+### 音频资源介绍
+
+- 声波
+- 声音的性质
+- 声音的数字化（采样->编码）
+- 文件格式
+  - OGG
+  - WAV
+  - MP3
+  - AIF
+- 软件
+  - Adobe Audition
+  - Adobe Soundbooth
+  - Audacity
+  - 游戏引擎混音：Unity/Unreal
+
+### Project 1：多米诺骨牌
+
+#### 1. 基础知识
+
+- 工程创建和资源导入
+  - 新建项目，取名 Domino
+  - Project -> 右键 -> Import New Asset
+- 创建游戏对象
+  - 哪些对象？
+    - 摄像机
+    - 光源
+    - 立方体
+  - 标签 Tag
+  - 组件 Component
+    - Transform 组件
+    - 关系：相互独立，父子关系
+    - 预制件：管理相同的游戏对象
+
+#### 2. 摆放球和牌
+
+金字塔资源是已经创建好的预制体，首先根据教程创建好三个小球和一个大球，小球摆放在金字塔顶，大球放在塔顶上方。
+
+然后创建一个 Cube 用来做多米诺牌，把 Cube 做成预制，然后拷贝多个牌。主要是练习 Unity 编辑器的使用。
+
+#### 3. 物理系统
+
+PhysX NVIDIA
+
+- 物理系统：重力，摩擦力，碰撞等
+- 组件
+  - 刚体（Rigidbody)
+  - 恒定力（Constant Force)
+  - 碰撞体（Collider)
+- 管理器（Physics Manager)
+
+这一节内容演示了如何添加刚体，以及如何添加物理材质。
+
+#### 4. 三维物理渲染
+
+- 网格（Mesh) 三角形网格
+  - 正方体：12 个三角形
+  - 球体：多个三角形
+  - 网格过滤器（Mesh Filter)存放游戏对象的网格信息
+  - 网格渲染器（Mesh Renderer)可以使用多个材质，和网格过滤器成对使用
+- 材质（Material)
+  - 创建：右键 -> Create -> Material
+  - Materials Element
+  - 选择着色器（Shader)
+- 着色器（Shader）
+  - 可编辑性
+  - 不受到显卡渲染管线限制
+  - 标准着色器（Standard Shader)
+    - Rendering Mode
+    - 预设值 Opaque 不透明
+    - Transparent 制作头盔，玻璃等透明效果
+    - Fade 制作淡入淡出效果
+    - Cutout 允许透明和不允许透明同时存在并显示明显的边界（草地）
+    - Albedo 表示光的反照率，描述物理的基本颜色
+    - Normal Map 法向贴图，可以通过改变光的反射角度，使物理显得凹凸不平。
+    - Emission 自发光
+  - 天空盒（Skybox)
+    - Skybox/6 Sided 绘制天空背景
+
+这一节内容演示了如何渲染材质，已经添加了隐形的挡板，让球按着斜坡滚动。
+
+#### 5. 光源 (Light)
+
+- Type: 光源类型
+  - Directional 方向光： 模拟极远处的光照，如地球上的太阳光
+  - Point 点源光: 模拟光源向四周发出均匀的光线，如灯泡
+  - Spot 聚光灯：向某个方向发出圆锥体光线，如手电筒
+  - Area 面光源：无法模拟实时光照，用于光照烘培
+- Color: 光源颜色
+- Intensity: 光照强度
+- Bounce Intensity: 反射光强度
+- 环境光： Lighting -> Scene 设置环境光
+  - Skybox ： 场景中天空盒设置
+  - Ambient Source: 环境光来源
+    - Skybox 天空盒
+    - Gradient 梯度光
+    - Color 单色光
+  - Ambient Intensity : 环境光强度
+
+演示了如何设置光源和天空盒。和演示视频不同的地方是，打开 Lightning 设置界面在 2019 里被移动到 Window -> Rendering 里面了。
+
+#### 6. 摄像机 （Camera)
+
+- 摄像机对象
+- 摄像机组件
+  - Clear Flags: 摄像机清除标记
+    - Skybox(预设) 天空盒
+    - Solid Color: 以某种颜色（纯色背景）
+    - Depth Only: 以深度值较低的摄像机渲染的图案（用于多个摄像机的同时绘制）
+    - Don't Clear: 不清除（不清楚影子）
+  - Projection： 摄像机投射方式
+    - Perspective 透视，远小近大
+    - Orthographic 正交，大小不变
+  - Field of View : 摄像机视角
+  - Clipping Planes: 摄像机远近剪切平面
+  - Depth: 摄像机深度
+  - GUI Layer: 显示 GUI 控件
+  - Flare Layer： 耀斑特效
+  - Audio Listener： 音频监听
+
+演示了添加新的摄像机，并绑定脚本控制摄像机围绕顶端旋转。然后添加摄像机组件，控制按 S 按键切换摄像机。
+
+#### 7. 音频（Audio)
+
+- AudioListerner 音频监听
+- AudioSource 音频源
+  - AudioClip 音频片段
+  - Mute 是否静音
+  - Play On Awake 是否自动播放
+  - Loop 是否循环
+  - Volume 音量大小
+  - Pitch 音调高低
+- AudioManager 音频系统管理器 Edit -> Poject Setting -> Audio
+  - Global Volume 全局音量大小设置
+  - Disable Unity Audio 是否停用 Unity 的音频系统
+
+演示了添加撞击音效。
+
+#### 8. 项目部署
+
+- 项目构建 Build
+
+这个就不详细介绍了，之前张帆的课程里玩了一遍。
+
+### Unity 编程语言 — C#编程
+
+### Unity 脚本编程 — Project 2：慕课英雄 MOOC HERO（第三人称射击简易版）
+
+### Unity 高级特性与移动平台开发 — Project 3：慕课英雄 MOOC HERO（第一人称射击完整版）
