@@ -632,6 +632,43 @@ PhysX NVIDIA
 
 ### Unity 编程语言 — C#编程
 
+这门课程只讲解基本 C# 编程
+
+- C# 基础语法
+  - 跟 C/C++ 一样的语法结构
+  - 判断 if/else if/else , switch case
+  - 循环 for/while/do while/ break/ continue
+- C# 变量与函数
+  - 基本数据类型
+    - 整数
+      - sbyte 8bit [-2^7,2^7-1]
+      - short 16bit [-2^15,2^15-1]
+      - int 32bit [-2^31,2^31-1]
+      - long 64bit [-2^63,2^63-1]
+    - 浮点数
+      - float
+      - double
+      - decimal
+    - bool
+    - char
+    - string
+  - 字符串连接符号为 `+`
+  - 枚举 enum
+  - 结构 struct
+  - 数组 `int[] arr = {1,2,3};`
+  - 值类型和引用类型
+    - 值类型：数值类型，布尔类型，结构类型
+    - 引用类型：类，委托，数组，接口
+    - `ref` 调用函数前需要初始化
+    - `out` 需要在函数实现里初始化
+- C# 面向对象概念
+  - 语法类似 C++
+  - 析构函数会被自动调用
+  - 只能继承一个基类，可以继承多个接口
+  - 抽象类 abstract， 使用 override 重写方法
+
+我看视频里的例子都比较简单，这一节就没写代码例子了。
+
 ### Unity 脚本编程 — Project 2：慕课英雄 MOOC HERO（第三人称射击简易版）
 
 ### Unity 高级特性与移动平台开发 — Project 3：慕课英雄 MOOC HERO（第一人称射击完整版）
