@@ -671,4 +671,40 @@ PhysX NVIDIA
 
 ### Unity 脚本编程 — Project 2：慕课英雄 MOOC HERO（第三人称射击简易版）
 
+#### 1. 脚本基础
+
+- 鼠标右键 -> Create -> C# Script
+- 从 Unity 里创建的 C# 脚本都会继承 MonoBehaviour 类。
+- 使用 `Debug.Log` 打印日志。
+
+#### 2. 脚本的生命周期
+
+- 事件函数
+  - Reset
+  - Awake
+  - OnEnable/OnDisable
+  - Start
+  - OnDestory
+  - 物理循环 FixedUpdate, OnTriggerXXX, OnCollisionXXX
+  - OnMouseXXX
+  - 游戏逻辑循环 Update, LateUpdate
+  - OnGUI
+- 脚本之间的执行顺序：以堆栈的方式，先设置，后执行。即：最先榜单的脚本最后执行。
+  - 可以使用 MonoManger 修改执行顺序的优先级
+  
+#### 3. 多米诺骨牌的脚本讲解
+
+- 摄像机围绕金字塔旋转
+  - 每帧执行一次：物体自转 `Domino/Assets/Scripts/SelfRotate.cs`
+  - 每帧执行一次：物体公转 `Domino/Assets/Scripts/RotateAroundAndLookAt.cs`
+- 多米诺骨牌的撞击声
+  - 当有物体与该物体即将发生碰撞时，调用OnCollisionEnter()函数 `Domino/Assets/Scripts/DominoCollide.cs`
+- 大球向下冲击效果
+  - 每隔固定时间执行一次 FixedUpdate ，用于物理模拟 `Domino/Assets/Scripts/ObjectAddForce.cs`
+- 多米诺骨牌中的摄像机切换 `Domino/Assets/Scripts/CameraSwitch.cs`
+  - 检测S键按下 `Input.GetKeyDown(KeyCode.S)`
+  - 切换摄像机，修改摄像机对象的 `enabled` 属性
+
+#### 4. 
+
 ### Unity 高级特性与移动平台开发 — Project 3：慕课英雄 MOOC HERO（第一人称射击完整版）
