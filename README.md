@@ -705,6 +705,103 @@ PhysX NVIDIA
   - 检测S键按下 `Input.GetKeyDown(KeyCode.S)`
   - 切换摄像机，修改摄像机对象的 `enabled` 属性
 
-#### 4. 
+#### 4. 地形系统(Terrain)
+
+- 创建地形： Hierarchy视图中鼠标右键 -> Create -> 3D Object -> Terrain
+- 地形系统组件
+  - Transform
+  - Terrain Collider 地形系统碰撞体
+  - Terrain 7种编辑工具
+    - Raise/Lower Terrain(升高/降低地形)
+      - Brushes 笔刷：用于绘制地形的笔刷样式
+      - Brushes Size 笔刷尺寸：用于确定笔刷大小
+      - Opacity 绘制强度：用于确定每次点击后地形升高/降低的强度
+    - Paint Height(喷绘高度)用于将地形绘制到指定高度
+    - Smooth Height(平滑高度)用于平滑地形高度
+    - Paint Texture(绘制纹理) 用于绘制地形系统的地表纹理
+      - Target Strength(目标强度)：纹理绘制的最大影响程度
+    - Place Trees(种植树)
+      - Add Tree
+      - Edit Tree
+      - Remove Tree
+      - Number of Trees 随机种植树的个数
+      - Keep Existing Trees 是否保留已种植的树
+      - Tree Density: 树绘制的密度
+      - Tree Height：绘制的树高度，可选择随机范围
+      - Lock Width to Height: 确定树的宽度是否一致
+      - Tree Width： 绘制的树宽度，可选择随机范围
+      - Random Tree Rotate: 确定树的朝向是否随机
+    - Paint Details(绘制细节)
+      - Add Grass Texture
+      - Add Detail Mesh 绘制草丛
+    - Terrain Setting（地形设置）用于设置地形系统的相关参数
+      - Base Terrain
+        - Draw: 是否呈现地形系统
+        - Pixel Error: 像素容差，表示显示地形网格时允许的像素误差
+        - Base Map Dist: 用于设定高分辨率贴图的显示范围
+        - Cast Shadows: 地形是否投射阴影
+      - Tree & Detail Objects
+        - Draw : 是否呈现树和细节
+        - Detail Distance： 设定超过摄像机多少距离的细节将会停止渲染
+        - Tree Distance： 表示树的显示距离，与摄像机距离超过该值的树将停止渲染
+      - Resolution
+        - Terrain Width: 地形系统的宽度
+        - Terrain Length : 地形系统的长度
+        - Terrain Height : 地形系统的高度
+
+#### 5. 地形系统(Terrain) 演示
+
+演示中需要用到 Unity 的 Standard Assets ，Unity 2019 中没有默认带这个资源了，需要手动下载。
+
+下载地址： https://assetstore.unity.com/packages/essentials/asset-packs/standard-assets-for-unity-2018-4-32351
+
+另外绘制地形的前面几个按钮合并到一个按钮了。有些许按钮位置不一样，但实际功能都是一样的。
+
+Skybox 的设置前面也设置过，熟悉的话会可以比较快的使用。
+
+#### 6. 动画片段与角色替身 (Animation Clip & Avatar)
+
+- MeCanim 动画系统
+- Mecanim Workflow(Mecanim工作流)
+  - 资源准备和导入 3Dmax Maya
+  - 角色的建立
+    - 人形角色: 动画重定向
+    - 一般角色
+  - 角色的运动
+- 导入模型与动画资源
+  - Project视图鼠标右键 -> Import Package -> Characters
+- 模型与动画设置
+  - Models 模型网格
+  - Rig 模型骨骼
+  - Animations 模型动画片段
+- 向场景中添加任务模型
+- Animation Clip (动画片段)
+  - Project视图选择动画资源
+  - Animations 中查看片段
+- 分割 Animation Clip
+  - 在 Inspector 视图中的 Clips 列表下选择需要分割的动画片段
+  - 使用动画预览确认动画片段的分割点（帧数）
+  - 设置动画片段的起始和末尾帧，并修改动画片段名称
+  - 新建动画片段，重复上述步骤完成动画分割
+- Animation Clip 首尾一致检查
+  - Loop Time 首尾姿势是否一致
+  - Root Transform Roation 检查首尾Rotation属性是否一致（直线运动才会一致）
+  - Root Transform Position(Y) 首尾检查Position属性Y轴分量是否一致（行走奔跑才一致，跳跃的不一致）
+  - Root Transform Position(XZ) 原地上跳的才会一致
+- Avatar(角色替身)
+  - 人形骨架
+  - 动画重定向
+  - 动画类型 Animaition Type
+    - Humanoid (人形动画)
+    - Generic
+    - Legacy
+    - None
+  - Avatar 的配置
+
+#### 7. 演示：导入角色模型和分割动画片段
+
+分割动画就是观察动画的起始帧，然后设置帧数。
+
+#### 8. 动画状态机（Animation State Machine)
 
 ### Unity 高级特性与移动平台开发 — Project 3：慕课英雄 MOOC HERO（第一人称射击完整版）
