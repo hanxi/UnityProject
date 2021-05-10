@@ -691,27 +691,27 @@ PhysX NVIDIA
   - OnGUI
 - 脚本之间的执行顺序：以堆栈的方式，先设置，后执行。即：最先榜单的脚本最后执行。
   - 可以使用 MonoManger 修改执行顺序的优先级
-  
+
 #### 3. 多米诺骨牌的脚本讲解
 
 - 摄像机围绕金字塔旋转
   - 每帧执行一次：物体自转 `Domino/Assets/Scripts/SelfRotate.cs`
   - 每帧执行一次：物体公转 `Domino/Assets/Scripts/RotateAroundAndLookAt.cs`
 - 多米诺骨牌的撞击声
-  - 当有物体与该物体即将发生碰撞时，调用OnCollisionEnter()函数 `Domino/Assets/Scripts/DominoCollide.cs`
+  - 当有物体与该物体即将发生碰撞时，调用 OnCollisionEnter()函数 `Domino/Assets/Scripts/DominoCollide.cs`
 - 大球向下冲击效果
   - 每隔固定时间执行一次 FixedUpdate ，用于物理模拟 `Domino/Assets/Scripts/ObjectAddForce.cs`
 - 多米诺骨牌中的摄像机切换 `Domino/Assets/Scripts/CameraSwitch.cs`
-  - 检测S键按下 `Input.GetKeyDown(KeyCode.S)`
+  - 检测 S 键按下 `Input.GetKeyDown(KeyCode.S)`
   - 切换摄像机，修改摄像机对象的 `enabled` 属性
 
 #### 4. 地形系统(Terrain)
 
-- 创建地形： Hierarchy视图中鼠标右键 -> Create -> 3D Object -> Terrain
+- 创建地形： Hierarchy 视图中鼠标右键 -> Create -> 3D Object -> Terrain
 - 地形系统组件
   - Transform
   - Terrain Collider 地形系统碰撞体
-  - Terrain 7种编辑工具
+  - Terrain 7 种编辑工具
     - Raise/Lower Terrain(升高/降低地形)
       - Brushes 笔刷：用于绘制地形的笔刷样式
       - Brushes Size 笔刷尺寸：用于确定笔刷大小
@@ -762,21 +762,21 @@ Skybox 的设置前面也设置过，熟悉的话会可以比较快的使用。
 #### 6. 动画片段与角色替身 (Animation Clip & Avatar)
 
 - MeCanim 动画系统
-- Mecanim Workflow(Mecanim工作流)
+- Mecanim Workflow(Mecanim 工作流)
   - 资源准备和导入 3Dmax Maya
   - 角色的建立
     - 人形角色: 动画重定向
     - 一般角色
   - 角色的运动
 - 导入模型与动画资源
-  - Project视图鼠标右键 -> Import Package -> Characters
+  - Project 视图鼠标右键 -> Import Package -> Characters
 - 模型与动画设置
   - Models 模型网格
   - Rig 模型骨骼
   - Animations 模型动画片段
 - 向场景中添加任务模型
 - Animation Clip (动画片段)
-  - Project视图选择动画资源
+  - Project 视图选择动画资源
   - Animations 中查看片段
 - 分割 Animation Clip
   - 在 Inspector 视图中的 Clips 列表下选择需要分割的动画片段
@@ -785,8 +785,8 @@ Skybox 的设置前面也设置过，熟悉的话会可以比较快的使用。
   - 新建动画片段，重复上述步骤完成动画分割
 - Animation Clip 首尾一致检查
   - Loop Time 首尾姿势是否一致
-  - Root Transform Roation 检查首尾Rotation属性是否一致（直线运动才会一致）
-  - Root Transform Position(Y) 首尾检查Position属性Y轴分量是否一致（行走奔跑才一致，跳跃的不一致）
+  - Root Transform Roation 检查首尾 Rotation 属性是否一致（直线运动才会一致）
+  - Root Transform Position(Y) 首尾检查 Position 属性 Y 轴分量是否一致（行走奔跑才一致，跳跃的不一致）
   - Root Transform Position(XZ) 原地上跳的才会一致
 - Avatar(角色替身)
   - 人形骨架
@@ -803,5 +803,121 @@ Skybox 的设置前面也设置过，熟悉的话会可以比较快的使用。
 分割动画就是观察动画的起始帧，然后设置帧数。
 
 #### 8. 动画状态机（Animation State Machine)
+
+- Animator 组件
+  - 选择游戏对象 -> Compent 菜单 -> Miscellaneous -> Animator
+  - Animator Controller 动画控制器
+  - Avatar 角色替身
+  - Apply Root Motion: 角色的位移或者旋转是否由动画片段控制。
+- Animator Controller
+  - 动画状态机 Animation State Machine
+  - 动画层与身体遮罩 Animation Layer & Avatar Mask
+- WASD 控制角色移动，空格控制跳跃
+- Animation State Machine 用于角色动画片段的播放与切换
+  - 状态： idel, walk, run
+  - 状态过度
+  - 参数
+- 导入 Import Package -> Characters
+- Ethan 模型
+- Animator 视图
+  - 创建和设置新状态
+  - 状态的名称
+  - 状态播放的动画片段 Motion
+  - 动画片段的播放速度 Speed
+- 添加动画参数
+- 动画状态的过度： Make Transition
+  - Has Exit Time 动画状态过度是否有退出时间
+  - 动画状态的过度曲线
+  - 状态过度条件设置 IsStop == True
+  - 使用脚本控制动画参数
+
+演示：给敌人模型创建控制器，并设置动画状态（停驻，奔跑，攻击，死亡），动画参数和动画状态的过度。
+
+#### 9. 动画层与身体遮罩
+
+- 奔跑时射击，跳跃时射击，行走时射击
+- 下落动画，奔跑动画，合成
+- Animation Layer 动画层
+  - Weight
+  - Mask: 身体遮罩
+    - 启动的关节受动画的控制而产生动作
+    - 禁用的关节不受动画的控制
+    - Project 视图 -> 鼠标右键 -> Create -> Avatar Mask
+    - 红色表示禁用
+    - 绿色表示启用
+
+演示： 给玩家模型创建动画控制器，并设置动画状态（停驻，奔跑，射击，跳跃），动画参数以及动画状态的过度。
+
+#### 10. 玩家移动控制
+
+- 玩家运动实现
+  - 使用 W, S 键控制玩家前进，后退
+  - 使用 A，D 键控制玩家左转，右转
+  - 使用空格键控制玩家跳跃
+  - 摄像机跟随玩家进行移动和旋转
+
+演示： 把 RobotPlayer 预制拖到场景中，然后把摄像机拖到 RobotPlaer 下面。然后添加 PlayerMove.cs 脚本。
+
+使用 `Input.GetAxisRaw` 函数获取玩家的输入，默认 A，D 为水平输入，W,S 为垂直输入。使用 `transform.Translate` 函数控制玩家前进和后退，使用 `transform.Rotate` 函数控制水平旋转。
+
+```c#
+//每帧执行一次，用于玩家的位移与旋转
+void Update () {
+    float h = Input.GetAxisRaw("Horizontal"); //获取玩家水平轴上的输入
+    float v = Input.GetAxisRaw("Vertical"); //获取玩家垂直轴上的输入
+    MoveAndRotate(h, v); //根据玩家在水平、垂直轴上的输入，调用玩家的位移与旋转函数
+}
+```
+
+物理相关函数在 `FixedUpdate` 里调用，使用 `Physics.Raycast` 函数来判断玩家是否在地面上。
+
+```c#
+//每个固定时间执行一次，用于物理模拟
+void FixedUpdate()
+{
+    //从玩家的位置垂直向下发出长度为groundedRaycastDistance的射线，返回值表示玩家是否该射线是否碰撞到物体，该句代码用于检测玩家是否在地面上
+    isGrounded = Physics.Raycast(transform.position, -Vector3.up, groundedRaycastDistance);
+    Jump(isGrounded); //调用跳跃函数
+}
+```
+
+#### 11. 玩家生命值和射击
+
+玩家生命值,  `PlayerHealth.cs`
+
+```c#
+public int health = 10; //玩家的生命值
+public bool isAlive = true; //玩家是否存活
+```
+
+玩家攻击, `PlayerAttack`
+
+```c#
+//每帧执行一次，用于玩家的射击行为
+void Update () {
+    //当玩家按下攻击键J，并且攻击间隔大于射击之间的最小时间间隔，执行射击相关行为
+    if (Input.GetKeyDown(KeyCode.J) && timer>timeBetweenShooting)
+    {
+        timer = 0.0f; //射击后将攻击时间间隔清零
+        animator.SetBool("isShooting", true); //设置动画参数，将isShooting布尔型参数设置为true，播放玩家射击动画
+        Invoke("shoot", 0.5f); //0.5秒后调用shoot() 射击函数
+    }
+    //否则，表示射击条件未满足
+    else
+    {
+        timer += Time.deltaTime; //更新攻击间隔，增加上一帧所花费的时间
+        gunLine.enabled = false; //将线渲染器设为禁用
+        animator.SetBool("isShooting", false); //设置动画参数，将isShooting布尔型参数设置为false，停止播放玩家射击动画
+    }
+}
+```
+
+按 J 键攻击，同时限制攻击频率为 timeBetweenShooting 。射击有 0.5 秒动作，所以使用 `Invoke` 延迟 0.5 秒执行 shoot 函数。
+
+演示： 给 RobotPlayer 添加 PlayHealth 脚本，给 RobotPlayer 的子对象 GunBarrelEnd 添加 PlayAttack 脚本，将 SightBeadUI(准星) 预制拖入场景。
+
+#### 12. 敌人的追踪逻辑
+
+#### 13. 敌人的生命值，分数与攻击
 
 ### Unity 高级特性与移动平台开发 — Project 3：慕课英雄 MOOC HERO（第一人称射击完整版）
