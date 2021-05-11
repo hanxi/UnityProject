@@ -176,6 +176,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6135509248464526161, guid: ede3cf0b76ec38b459e2a62698de96ed,
+        type: 3}
+      propertyPath: targetTrace
+      value: 
+      objectReference: {fileID: 107903929}
+    - target: {fileID: 6135509248464526161, guid: ede3cf0b76ec38b459e2a62698de96ed,
+        type: 3}
+      propertyPath: createGameObject
+      value: 
+      objectReference: {fileID: 162970, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ede3cf0b76ec38b459e2a62698de96ed, type: 3}
 --- !u!1 &107903929 stripped
@@ -239,6 +249,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6135509248464526161, guid: ede3cf0b76ec38b459e2a62698de96ed,
+        type: 3}
+      propertyPath: targetTrace
+      value: 
+      objectReference: {fileID: 107903929}
+    - target: {fileID: 6135509248464526161, guid: ede3cf0b76ec38b459e2a62698de96ed,
+        type: 3}
+      propertyPath: createGameObject
+      value: 
+      objectReference: {fileID: 162970, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ede3cf0b76ec38b459e2a62698de96ed, type: 3}
 --- !u!1 &507004065
@@ -273,7 +293,7 @@ Transform:
   - {fileID: 600330451}
   - {fileID: 1388381943}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &600330451 stripped
 Transform:
@@ -447,7 +467,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &735300155
 GameObject:
@@ -495,7 +515,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &738508889
 PrefabInstance:
@@ -554,67 +574,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77a35cdaf85eb68439684f155a9f2013, type: 3}
---- !u!1001 &1078981197
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 162970, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_Name
-      value: Zombie
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 306.08405
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 277.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 490542, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 843205560, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 107903929}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4b756f17d823f8e4d9284d208142c440, type: 3}
 --- !u!1001 &1273164524
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -636,7 +595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22451434, guid: 20647dcacbe549942922c7f08a3ff61a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22451434, guid: 20647dcacbe549942922c7f08a3ff61a, type: 3}
       propertyPath: m_AnchorMax.x
@@ -739,7 +698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22444724, guid: 574fed38b9570b84fac7751d50284941, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 22444724, guid: 574fed38b9570b84fac7751d50284941, type: 3}
       propertyPath: m_AnchorMax.x
@@ -894,6 +853,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6135509248464526161, guid: ede3cf0b76ec38b459e2a62698de96ed,
+        type: 3}
+      propertyPath: targetTrace
+      value: 
+      objectReference: {fileID: 107903929}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ede3cf0b76ec38b459e2a62698de96ed, type: 3}
 --- !u!4 &2080314709 stripped

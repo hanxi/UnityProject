@@ -918,6 +918,69 @@ void Update () {
 
 #### 12. 敌人的追踪逻辑
 
+EnemyTrace.cs
+
+使用 `Vector3.Distance` 接口计算敌人与玩家的距离，如果距离大于设定的值，则追踪目标。
+
+使用 `transform.LookAt` 接口设置敌人朝向玩家。
+
 #### 13. 敌人的生命值，分数与攻击
+
+EnemyHealth.cs
+
+- 敌人被玩家攻击时，减少生命值
+- 敌人受伤时，出现流血效果，并发出受伤的声音
+  - 使用 `AudioSource.PlayClipAtPoint` 播放声音
+- 敌人死亡则倒地消失，并给玩家加分数
+
+EnemyAttack.cs
+
+- 当玩家进入敌人攻击范围，敌人攻击玩家，玩家受到伤害
+- 敌人攻击时抬手击打，并播放敌人攻击音效
+- 敌人攻击有时间间隔
+
+`OnTriggerStay` 和 `OnTriggerExit` 事件监测是否有物体处于攻击范围和离开攻击范围。
+
+演示： 给敌人添加 Capsule Collider 组件，并勾选 is Trigger 选项，给敌人对象绑定 EnemyHealth 和 Enemy Attack 脚本。
+
+#### 14. 游戏管理脚本的实现
+
+GameManager.cs
+
+- 管理游戏状态（游戏进行中/胜利/失败）
+- 管理玩家积分
+- 管理场景中对象之间的交互
+- 显示游戏装（玩家生命值和玩家得分）
+
+`Update` 中管理游戏状态：分别表示游戏进行（Playing）、游戏失败（GameOver）、游戏胜利（Winning）。
+
+演示：创建空对象 GameManager ，添加 GameManager 脚本，将 GameMessageUI 预制件拖入场景，设置 GameManager 脚本的相关属性。
+
+#### 15. 敌人自动生成
+
+AutoCreateObject.cs
+
+- 在给定的地点动态生成敌人，这里设定在金字塔顶端生成
+- 每次生成敌人的时间间隔随机
+
+```c#
+createTime = Random.Range (minSecond, maxSecond);
+```
+
+使用 `Instantiate` 创建对象。
+
+```c#
+//生成游戏对象函数
+void CreateObject() {
+    Vector3 deltaVector = new Vector3 (0.0f, 5.0f, 0.0f); //生成位置偏差向量
+    GameObject newGameObject = Instantiate ( //生成游戏对象
+    createGameObject, //生成游戏对象的预制件
+    transform.position-deltaVector, //生成游戏对象的位置，为该脚本所在游戏对象的位置减去生成位置偏差向量
+    transform.rotation //生成游戏对象的朝向
+  ) as GameObject;
+  if (newGameObject.GetComponent<EnemyTrace> () != null) //设置敌人的追踪目标
+    newGameObject.GetComponent<EnemyTrace> ().target = targetTrace;
+}
+```
 
 ### Unity 高级特性与移动平台开发 — Project 3：慕课英雄 MOOC HERO（第一人称射击完整版）
