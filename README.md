@@ -753,7 +753,7 @@ PhysX NVIDIA
 
 演示中需要用到 Unity 的 Standard Assets ，Unity 2019 中没有默认带这个资源了，需要手动下载。
 
-下载地址： https://assetstore.unity.com/packages/essentials/asset-packs/standard-assets-for-unity-2018-4-32351
+下载地址： <https://assetstore.unity.com/packages/essentials/asset-packs/standard-assets-for-unity-2018-4-32351>
 
 另外绘制地形的前面几个按钮合并到一个按钮了。有些许按钮位置不一样，但实际功能都是一样的。
 
@@ -984,3 +984,114 @@ void CreateObject() {
 ```
 
 ### Unity 高级特性与移动平台开发 — Project 3：慕课英雄 MOOC HERO（第一人称射击完整版）
+
+#### 1. 游戏人称变换
+
+从第三人称改为第一人称
+
+玩家控制：
+
+- WSAD 控制玩家前后左右移动
+- 空格键控制玩家跳跃
+- 鼠标的移动控制玩家的转向和视角
+- 鼠标点击实现
+
+FPSPlayerMove.cs
+
+演示：
+
+- 创建空游戏对象，为其添加 Rigidbody 组件以及 Capsule Collider 组件，并将其重命名为 FPSPlayer，将其作为第一人称射击游戏玩家。
+- 将主摄像机 Main Camera 设为玩家子对象，并调整摄像机位置
+- 将枪械预制件拖入场景中，将其设置为 Main Camera 的子对象，并调整枪械的位置
+- 给玩家对象绑定玩家相关的脚本
+
+`CrossPlatformInputManager.GetAxisRaw` 实现玩家方向的操作，可以兼容其他平台的输入。
+
+使用 `Translate` 实现玩家平移，用 z 轴 v 和 x 轴 h 计算移动角度。
+
+```c#
+//角色移动函数
+void Move(float h,float v){
+  //玩家以moveSpeed的速度进行平移
+  transform.Translate ((Vector3.forward * v + Vector3.right * h) * moveSpeed * Time.deltaTime);
+}
+```
+
+使用 `Transform.localEulerAngles` 旋转摄像机。使用 `Transform.Rotate` 旋转玩家。
+
+```c#
+//角色转向函数
+void Rotate(float rh,float rv){
+  transform.Rotate (0, rv * rotateSpeed, 0); //鼠标水平轴上的移动控制角色左右转向
+  mouseRotateX -= rh * rotateSpeed;   //计算当前摄像机的旋转角度
+  mouseRotateX = Mathf.Clamp (mouseRotateX, miniMouseRotateX, maxiMouseRotateX); //将旋转角度限制在miniMouseRotateX与MaxiMouseRotateY之间
+  myCamera.transform.localEulerAngles = new Vector3 (mouseRotateX, 0.0f, 0.0f); //设置摄像机的旋转角度
+}
+```
+
+#### 2. uGUI - 画布与锚点
+
+GUI 是Graphical User Interface （图像用户界面）的简称。
+
+Canvas (画布)
+
+- 靠上的对象先绘制
+- Canvas 组件
+  - Sort Order 值越小越先绘制
+
+Anchor （锚点） 相对定位技术
+
+- 由4个小三角形组成
+- 点击锚点位置可快速设置位置
+- 人物的生命值血条以屏幕左下角为锚点
+- 瞄准点以屏幕中央为锚点
+
+#### 3. uGUI 控件
+
+- Text 文本控件
+  - Text： 文本内容
+  - Font: 字体样式
+  - Font Style: 字体风格
+  - Font Size: 字体大小
+  - Font Spacing： 行间距
+  - Alignment: 对齐方式
+  - Color: 文字颜色
+  - Material: 文字材质
+- Image 图像控件
+  - Source Image: 图像源
+  - Color: 图像显示的颜色
+  - Material: 图像材质
+- Button 按钮控件
+  - 复合控件，包括 Image 和 Text 组件
+  - On Click() 设置响应 Button 点击事件
+  - 只能设置 public 的函数
+- InputField 输入框
+  - 复合控件，包括输入栏背景图，输入栏组件，输入栏提示文本以及输入栏可编辑文本
+- Slider 滑动条
+  - Background 滑动条背景
+  - Fill Area 滑动条填充图案
+  - Handle Slide Area 滑动条手柄
+  - Fill Rect: 滑动条填充图案
+  - Handle Rect: 滑动条上的滑块图案
+  - Direction: 数值增加的方向
+  - Min/Max value: 滑动条最大最小值
+  - Value: 滑动条当前值
+- Toggle 开关控件
+  - 复合控件： 勾选框背景，勾选图案，文本信息
+  - Is On: Toggle 是否勾选
+  - Graphic: 设置背景图案
+  - OnValueChanged: 当勾选情况变更时响应事件函数
+
+-----
+
+uGUI 制作游戏操作界面
+
+uGUI 制作游戏结束画面
+
+使用粒子系统制作粒子特效
+
+线渲染器制作激光特性
+
+物品收集
+
+游戏胜利和失败界面
