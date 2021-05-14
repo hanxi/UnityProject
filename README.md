@@ -1,5 +1,10 @@
 # Unity 入门
 
+学习资源：
+
+- [《一刻钟学会：游戏开发基础》](https://www.icourse163.org/course/ZJICM-1449934195) : 偏向 2D 入门
+- [《基于Unity引擎的游戏开发基础》](https://www.coursera.org/learn/unity-yinqing-youxi-kaifa) ： 偏向 3D 入门
+
 ## 学习 C# 语言
 
 <https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/>
@@ -985,6 +990,15 @@ void CreateObject() {
 
 ### Unity 高级特性与移动平台开发 — Project 3：慕课英雄 MOOC HERO（第一人称射击完整版）
 
+- uGUI 制作游戏操作界面
+- uGUI 制作游戏结束画面
+- 使用粒子系统制作粒子特效
+- 线渲染器制作激光特性
+- 物品收集
+- 游戏胜利和失败界面
+
+按照演示教程导入资源后，会出现一些版本兼容问题，比如报错的 C# 脚本中包含了 winphone 这些已经不支持的平台，需要删除相关代码才能正常运行。
+
 #### 1. 游戏人称变换
 
 从第三人称改为第一人称
@@ -1082,16 +1096,169 @@ Anchor （锚点） 相对定位技术
   - Graphic: 设置背景图案
   - OnValueChanged: 当勾选情况变更时响应事件函数
 
------
+#### 4. 游戏开始，进行，结束界面制作
 
-uGUI 制作游戏操作界面
+- 游戏标题
+- 游戏面板
+  - 开始
+    - 输入英雄名号
+    - 开战按钮
+    - 返回
+  - 选项
+    - 声音开关
+  - 退出
 
-uGUI 制作游戏结束画面
+GameSetting.cs
 
-使用粒子系统制作粒子特效
+- 开战
+- 声音开关
+- 退出按钮： `Application.exit()`
 
-线渲染器制作激光特性
+游戏进行界面制作：
 
-物品收集
+- 准星： Image
+- 战绩: Text
+- 血条： Text + Slider
 
-游戏胜利和失败界面
+GameManager.cs
+
+- 更新灭敌战绩和游戏战斗时间
+- 玩家受伤效果，修改 hurtImage 的透明度
+
+游戏结束界面
+
+- 排行榜
+  - 三个条目，显示前三名
+- 开始新战斗
+- 返回主界面
+
+演示：
+
+- 游戏开始界面制作
+- 游戏进行界面制作
+- 游戏结束界面制作
+
+#### 5. 移动平台 UI 设置
+
+使用 Unity 提供的 Cross Platform Input 资源包。
+
+- 将 Unity 编辑器平台改为 Android 平台
+- 向场景中添加 Mobile Control Rig 脚本
+- 在场景中添加用于接受移动端输入的 UI 对象
+- 给 UI 对象绑定 Cross Platform Input 中的脚本，用于获取移动端的输入
+- 根据获取的输入在角色控制脚本中实现对玩家的控制
+
+FPSPlayerMove.cs
+
+`CrossPlatformInputManager.GetAxisRaw()` 获取输入。
+
+移动端玩家转向的实现 TouchPad。
+
+MobileSingleStickControl 实现跳跃（ButtonHandler)
+
+移动平台 UI 适配
+
+- 固定像素尺寸（Constant Pixel Size)
+- 尺寸随屏幕缩放（Scale With Screen Size)
+- 固定物理尺寸（Constant Physical Size)
+
+演示：移动平台控制界面制作
+
+- 玩家移动操纵杆制作
+- 玩家转向触摸板制作
+- 玩家射击按钮制作
+- 玩家跳跃按钮制作
+
+#### 6. 粒子系统 (Particle System)
+
+- 例子时在三维空间中渲染出来的二维图像，用于表现出爆炸，烟，火，水等效果
+- Unity 的 Shuriken 粒子系统
+- Shuriken 粒子系统采用模块化的管理方式
+
+创建粒子系统： Hierarchy 视图 -> 鼠标右键 -> Particle System
+
+- 粒子系统初始化模块
+  - Start Lifetime 粒子初始存活时间
+  - Start Speed 粒子初始速度
+  - Start Size 粒子初始大小
+  - Start Rotation 粒子初始朝向
+  - Gravity 重力
+  - Max Particles 粒子最大个数
+- Emission 发射模块
+  - Rate 粒子发射速率
+- Shape 形状模块
+  - Shape： 粒子喷射形状
+  - Angle： Cone圆锥角度
+  - Radius： Cone圆锥底部半径
+- ColorOverLifetime 粒子生命周期颜色模块
+  - Color 粒子颜色
+  - 初始颜色
+  - 末尾颜色
+- SizeOverLifetime 粒子生命周期尺寸模块
+  - Size Random Between Tow Curves
+  - 曲线设置
+- 本项目中的粒子系统
+  - 场景中火焰粒子效果：持续播放
+  - 枪械开火粒子效果：开枪时播放
+  - 敌人流血粒子效果：敌人受伤时播放
+  - EnermyHealth.cs
+- 演示
+  - 场景中火焰粒子效果的制作
+  - 敌人流血粒子效果的制作和控制
+  - 枪械开火粒子效果的制作和控制
+
+#### 7. 线渲染器（Line Renderer)
+
+- 使用一组3D点，在相邻两点之间用材质绘制一条线
+- 添加： 选择游戏对象 -> Component 菜单 -> Effects -> Line Renderer
+- Materials 材质设置
+- 如果只有两个点，size : 2
+- Parameters 参数
+  - Start Width
+  - End Width
+  - Start Color
+  - End Color
+- 近大远小
+  - 透视
+  - 末端位置的确定：击中和没击中
+  - PlayerAttack.cs `gunLine.enabled`
+- 演示
+  - 枪械发出的激光制作
+  - 设置线渲染器的属性
+
+#### 8. 物品收集
+
+- 血瓶收集
+  - 接近血瓶， `OnTriggerEnter()`
+  - 玩家加血，不能超过满血
+  - 播放音效 `AudioSource.PlayClipAtPoint()`
+  - 物品删除
+- 演示
+  - 创建血瓶，添加 Point Light
+  - 给血瓶添加 Sphere Collider, 勾选 is Trigger
+  - 给血瓶添加 PickUpCollect 脚本和 Self Rotate 脚本
+
+#### 9. 游戏胜利和失败界面
+
+GameOverEffects.cs
+
+- 游戏结束时，摄像机平移导天空俯视
+- LookAt 朝向玩家
+
+失败画面
+
+- 屏幕逐渐变黑： `Color.Lerp`
+- 敌人站成一排面向摄像机
+
+演示：
+
+- 创建游戏结束摄像机，并禁用
+- 给 GameManager 对象添加 GameOverEffects 脚本
+- 设置 GameOverEffects 脚本的属性
+
+## 总结
+
+到此已经学完 Unity 基础开发了，后面还有两门高阶课程，暂时还不在 Unity 上继续花时间了。
+
+- [《基于Unity引擎的游戏开发进阶》](https://www.coursera.org/learn/unity-kaifa-jinjie)
+- [《网络游戏设计与开发毕业项目》](https://www.coursera.org/learn/wangluo-youxi-biye)

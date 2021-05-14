@@ -43,8 +43,8 @@ public class PlayerAttack : MonoBehaviour {
 		AudioSource.PlayClipAtPoint (shootingAudio, transform.position);	//播放射击音效
 		if (shootingEffect != null) {										//实例化玩家射击效果的粒子系统对象
 			instantiation = Instantiate (shootingEffect, 
-				shootingEffectTransform.position, 
-				shootingEffectTransform.rotation) as GameObject;
+				transform.position, 
+				transform.rotation) as GameObject;
 			instantiation.transform.parent = transform;
 		}
 		ray.origin = myCamera.transform.position;		//设置射线发射的原点：摄像机所在的位置

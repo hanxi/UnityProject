@@ -26,8 +26,8 @@ public class EnemyHealth : MonoBehaviour {
 	public void TakeDamage(int damage){
 		if (hurtEffect != null) { 				//实例化敌人受伤效果的粒子系统对象
 			instantiation = Instantiate (hurtEffect, 
-				hurtEffectTransform.position, 
-				hurtEffectTransform.rotation) as GameObject;
+				transform.position, 
+				transform.rotation) as GameObject;
 			instantiation.transform.parent = transform;
 		}
 		health -= damage;						//敌人受伤扣血
